@@ -78,7 +78,7 @@ table.r tr.me{background:color-mix(in srgb,var(--ac) 18%,transparent)}
 <div class="p"><h2>Cartas de resposta (nem todas servem)</h2><div id="bank"></div>
 <div class="bt"><button class="cp" id="bC">Compilar</button><button class="go" id="bE">Executar</button><button id="bS">Passo a passo</button>
 <select id="sp" aria-label="Velocidade"><option value="1100">Lento</option><option value="700" selected>Normal</option><option value="300">Rápido</option></select>
-<button id="bH">Suporte Técnico (−5)</button><button id="bR">Reiniciar</button></div></div>
+<button id="bR">Reiniciar</button></div></div>
 </section>
 <section>
 <div class="p"><h2>Bateria da Torre</h2><div class="barw"><div id="bar"></div></div><div id="bt"></div></div>
@@ -171,9 +171,6 @@ $('#bC').onclick=()=>{stop();comp()};
 $('#bE').onclick=()=>{stop();if(prep()){play=true;loop()}};
 $('#bS').onclick=()=>{stop();if(!tr&&!prep())return;next()};
 $('#bR').onclick=()=>load(cur);
-$('#bH').onclick=()=>{const m=M[cur];if(pl.every(x=>x==null))return msg('Coloque algumas cartas primeiro para pedir ajuda.','wn');
- pen+=5;const w=pl.findIndex((c,i)=>c!=null&&c!=m.right[i]);bat(m.bat-pen);
- msg(w>=0?`Suporte Técnico: a lacuna L${w+1} não está certa. Menos 5 ciclos.`:pl.includes(null)?'Suporte Técnico: o que está colocado está certo, mas faltam lacunas. Menos 5 ciclos.':'Suporte Técnico: tudo certo! Pode compilar. Menos 5 ciclos.','wn')};
 document.addEventListener('dragstart',e=>{const k=e.target.dataset&&e.target.dataset.k;if(k!=null){dragK=+k;e.dataTransfer.setData('text/plain',k)}});
 document.addEventListener('dragover',e=>{if(e.target.closest('.bl,#bank'))e.preventDefault()});
 document.addEventListener('drop',e=>{e.preventDefault();if(dragK==null)return;const c=M[cur].cards[dragK],b=e.target.closest('.bl');
@@ -236,7 +233,6 @@ const op=prep;prep=function(){const m=M[cur];if(!running()){msg('A partida não 
 const ol=load;load=function(i){if(can(i))ol(i)};
 const op2=put;put=function(i,c){if(running())op2(i,c)};
 const od=draw;draw=function(){od();document.querySelectorAll('#tabs button').forEach(b=>{const i=+b.dataset.t;if(!can(i)){b.textContent='🔒 '+b.textContent;b.classList.add('lk')}else if(me&&me.done[i]!=null)b.textContent+=' ✔'})};
-const bh=$('#bH').onclick;$('#bH').onclick=()=>{if(1){pen+=5;bat(M[cur].bat-pen);msg('Suporte Técnico: compare o esperado com o obtido nos testes que falharam e releia a condição de cada if e de cada laço. Menos 5 ciclos.','wn')}else bh()};
 document.addEventListener('click',e=>{const id=e.target.id;
  if(id=='bJ')join();
  else if(id=='bI'&&isOrg&&ST.status=='lobby'&&Object.keys(PL).length){setSt({status:'running',startedAt:Date.now(),endedAt:0});if(!onl)load(0)}
